@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Crypto Loop">
+<meta name="theme-color" content="#0d1117">
+<title>Crypto Loop — Mobile</title>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--p2:#1c2330;--line:#2a3140;--txt:#e6edf3;--mut:#8b949e;--grn:#3fb950;--red:#f85149;--yel:#d29922;--accent:#39d0d8;--blu:#58a6ff;--pur:#bc8cff}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+  header{padding:max(12px,env(safe-area-inset-top)) 14px 10px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+  h1{font-size:16px;margin:0 0 2px}
+  .sub{font-size:11px;color:var(--mut)}
+  .seg{display:flex;gap:6px;margin-top:10px}
+  .seg button{flex:1;background:var(--p2);color:var(--mut);border:1px solid var(--line);border-radius:9px;padding:9px 0;font-size:13px;font-weight:600}
+  .seg button.on{color:var(--accent);border-color:var(--accent);background:#0d1d22}
+  .wrap{padding:12px}
+  .pane{display:none}.pane.on{display:block}
+  button{font-family:inherit}
+  .btn{width:100%;min-height:46px;background:var(--accent);color:#04222a;font-weight:800;border:none;border-radius:11px;font-size:15px;margin-bottom:8px}
+  .btn.sec{background:var(--p2);color:var(--txt);border:1px solid var(--line);font-weight:600}
+  .info{font-size:11px;color:var(--mut);text-align:center;margin-bottom:10px;min-height:14px}
+  /* tiles */
+  .tile{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--grn);border-radius:13px;padding:13px 14px;margin-bottom:12px}
+  .tile.buy{box-shadow:0 0 0 1.5px var(--grn),0 0 18px rgba(63,185,80,.30)}
+  .thd{display:flex;align-items:center;gap:8px}
+  .tsym{font-size:19px;font-weight:800}
+  .tier{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px}
+  .t-base{background:#1f6feb33;color:#79c0ff}.t-1{background:#3fb95033;color:#56d364}.t-2{background:#bc8cff33;color:#d2a8ff}
+  .bz{font-size:10px;font-weight:800;color:#04220f;background:var(--grn);border-radius:5px;padding:2px 7px}
+  .tav{margin-left:auto;font-size:10px;color:var(--grn)}
+  .tprice{font-size:15px;margin-top:6px}
+  .tprice b{font-size:19px}
+  .tprice .ed{color:var(--blu);font-size:11px;margin-left:6px}
+  .dist{font-size:12px;margin-top:3px;font-weight:600}
+  .dist .pos{color:var(--grn)}.dist .neg{color:var(--red)}
+  .floor{font-size:11px;color:var(--mut);margin-top:3px}
+  .floor .neg{color:var(--red);font-weight:700}.prov{color:#6b7280;font-style:italic}
+  .note{font-size:11px;color:var(--mut);margin-top:7px;line-height:1.4}
+  svg.spk{width:100%;height:54px;display:block;margin:7px 0}
+  /* checklist */
+  ul.ck{list-style:none;padding:0;margin:0}
+  ul.ck li{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:9px;font-size:14px}
+  ul.ck li.done{border-color:var(--grn);background:#3fb9501a}
+  ul.ck li .bx{width:22px;height:22px;border:2px solid var(--mut);border-radius:6px;flex-shrink:0;text-align:center;line-height:19px;font-size:15px}
+  ul.ck li.done .bx{border-color:var(--grn);color:var(--grn)}
+  .verdict{margin-top:8px;padding:11px;border-radius:11px;text-align:center;font-weight:800}
+  .v-green{background:#3fb95022;color:var(--grn);border:1px solid var(--grn)}
+  .v-red{background:#f8514922;color:var(--red);border:1px solid var(--red)}
+  /* loop */
+  .step{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:11px;padding:11px 13px;margin-bottom:9px}
+  .step b{color:var(--accent);display:block;font-size:14px;margin-bottom:2px}
+  .step span{font-size:12.5px;color:var(--mut)}
+  .rule{font-size:12.5px;color:var(--txt);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:7px}
+  .rule b{color:var(--accent)}
+  .disc{font-size:10.5px;color:var(--mut);text-align:center;padding:10px 4px;line-height:1.5}
+  .addhome{font-size:11px;color:#cae3ff;background:#0d2847;border:1px solid #1f6feb;border-radius:10px;padding:9px 11px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>⟳ Crypto Loop</h1>
+  <div class="sub">Spot · no leverage · house-money · snapshot 22 Jun</div>
+  <div class="seg">
+    <button data-t="roster" class="on" onclick="seg('roster',this)">Roster</button>
+    <button data-t="check" onclick="seg('check',this)">Verify</button>
+    <button data-t="loop" onclick="seg('loop',this)">Loop</button>
+  </div>
+</header>
+<div class="wrap">
+
+  <!-- ROSTER -->
+  <div class="pane on" id="roster">
+    <div class="addhome">📲 Tip: Safari → Share → <b>Add to Home Screen</b> to run this like an app. Tap any price to set it manually.</div>
+    <button class="btn" id="kBtn" onclick="fetchPrices()">↻ Live prices (Kraken)</button>
+    <div class="info" id="kInfo"></div>
+    <div id="hvCard" style="background:#161b22;border:1px solid #2a3140;border-radius:13px;padding:12px 14px;margin-bottom:12px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:8px">⇅ JASMY Range Harvest</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <div style="flex:1"><div style="font-size:10px;color:var(--mut)">Buy</div><input id="hvBuy" type="number" step="any" value="0.00463" oninput="calcHarvest()" style="width:100%;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px"></div>
+        <div style="flex:1"><div style="font-size:10px;color:var(--mut)">Sell</div><input id="hvSell" type="number" step="any" value="0.00488" oninput="calcHarvest()" style="width:100%;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px"></div>
+        <div style="flex:1"><div style="font-size:10px;color:var(--mut)">Stop</div><input id="hvStop" type="number" step="any" value="0.00455" oninput="calcHarvest()" style="width:100%;background:var(--bg);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px"></div>
+      </div>
+      <div id="hvStatus" style="font-size:13px;font-weight:700;color:var(--mut)">Hit ↻ Live prices</div>
+    </div>
+    <div id="tiles"></div>
+  </div>
+
+  <!-- VERIFY -->
+  <div class="pane" id="check">
+    <p style="font-size:13px;color:var(--mut);margin:4px 0 10px">Tap to tick. All green = loop in spec. Reset each loop.</p>
+    <ul class="ck" id="ck">
+      <li data-k="caps"><span class="bx"></span><span>Every position under its % cap</span></li>
+      <li data-k="powder"><span class="bx"></span><span>Dry powder ≥ 30% (until the BTC flush)</span></li>
+      <li data-k="inval"><span class="bx"></span><span>Every holding has a written invalidation</span></li>
+      <li data-k="lev"><span class="bx"></span><span>Zero leverage — spot only</span></li>
+      <li data-k="house"><span class="bx"></span><span>Doubles → sold half into base</span></li>
+      <li data-k="basetp"><span class="bx"></span><span>Base (BCH) has a take-profit ladder</span></li>
+    </ul>
+    <div id="verdict" class="verdict v-red">VERIFY: not green yet</div>
+    <button class="btn sec" style="margin-top:10px" onclick="resetCk()">Reset for new loop</button>
+  </div>
+
+  <!-- LOOP -->
+  <div class="pane" id="loop">
+    <div class="step"><b>1 · DISCOVER</b><span>Refresh prices. Note BTC trend. Mark what hit a level or invalidation.</span></div>
+    <div class="step"><b>2 · PLAN</b><span>Pick ONE highest-impact move.</span></div>
+    <div class="step"><b>3 · EXECUTE</b><span>Spot limit orders only. Double → sell half to base.</span></div>
+    <div class="step"><b>4 · VERIFY</b><span>Run the Verify tab. All green or fix next loop.</span></div>
+    <div class="step"><b>5 · ITERATE</b><span>Re-run on schedule or any &gt;10% move.</span></div>
+    <div class="rule"><b>House money:</b> any double → sell half, route to base.</div>
+    <div class="rule"><b>Invalidation:</b> new low while BTC holds → stop adding / cut.</div>
+    <div class="rule"><b>Powder:</b> keep ≥30% for the flush you expect.</div>
+    <div class="rule"><b>Buy zone (green tile):</b> price at a <i>validated</i> strong demand zone — confirm on your live chart before acting.</div>
+  </div>
+
+  <div class="disc">Personal framework — <b>not financial advice</b>. Levels are reference points (snapshot 22 Jun) — confirm live. Data saved on this device only.</div>
+</div>
+
+<script>
+const LS={chk:'clp_chk',px:'clp_rprices'};
+const fmtL=v=>v<0.01?v.toFixed(5):(v<10?v.toFixed(2):v.toFixed(0));
+const ROSTER=[
+ {sym:'BCH',tier:'BASE',tc:'base',price:190.38,rsi:'~low',sup:[180,174],strong:[161,140,120],res:[250,300],vr:false,note:'Capitulating (live ~$190). Orders 174.70 (HARVEST) / 161 (ACCUM). $140/$120 deep 5x guides.'},
+ {sym:'BTC',tier:'BASE',tc:'base',price:62062,rsi:'—',sup:[],strong:[],res:[],vr:false,note:'Macro driver — falling toward $62k. Sets the macro-invalidation level.'},
+ {sym:'SOL',tier:'T1',tc:'1',price:68.83,rsi:'~40',sup:[68],strong:[62,52,40],res:[78,84],vr:true,note:'$60 key line; $50–55 major demand; $40 deep.'},
+ {sym:'HYPE',tier:'T1',tc:'1',price:62.89,rsi:'~40',sup:[60],strong:[55,40,32],res:[72.5,76],vr:true,note:'Broke $60. $54–56 demand, $40 rebound, $32–34 floor.'},
+ {sym:'TAO',tier:'T1',tc:'1',price:217.81,rsi:'~45',sup:[220],strong:[200,160,140],res:[255,267,292],vr:true,note:'Broke $220. Floor $160–200; Oct-25 low $140.'},
+ {sym:'NEAR',tier:'T1',tc:'1',price:1.99,rsi:'~45',sup:[2.00,1.89],strong:[1.62,1.38,1.22],res:[2.25,2.42,2.90],vr:true,note:'Lost $2.00. Base $1.30–1.60; ladder 1.62/1.38/1.22.'},
+ {sym:'INJ',tier:'T1',tc:'1',price:4.54,rsi:'~45',sup:[5.00,4.76],strong:[4.07,2.75],res:[5.90,6.75],vr:true,note:'$5/$4.76 minor. Bounce $4.07 then $2.7–2.8 cycle low.'},
+ {sym:'ONDO',tier:'T1•RWA',tc:'1',price:0.311,rsi:'~42',sup:[0.30],strong:[0.24,0.20],res:[0.385],vr:true,note:'$0.2325 order block tested 4×; $0.20 Feb-26 low. ⚠ unlocks.'},
+ {sym:'JASMY',tier:'T1.5',tc:'2',price:0.00452,rsi:'~38',sup:[0.0046],strong:[0.0044,0.00425,0.00385],res:[0.0048,0.0052],vr:true,note:'Flushed to 0.00437, at blended cost. Floor 0.00425, base 0.00385. Conviction hold.'},
+ {sym:'XRP',tier:'T2',tc:'2',price:1.0996,rsi:'~40',sup:[1.12],strong:[1.10,0.95,0.85],res:[1.25,1.29],vr:true,note:'AT $1.10 demand. Deeper $0.95 / $0.85 if reset extends. ETF tailwind.'}
+];
+const KLEG={BTC:'XXBTZUSD',XBT:'XXBTZUSD',ETH:'XETHZUSD',XRP:'XXRPZUSD'};
+const kpair=a=>KLEG[a]||(a.toUpperCase()+'USD');
+
+function applySaved(){try{const s=JSON.parse(localStorage.getItem(LS.px)||'null');if(s)ROSTER.forEach(c=>{if(s[c.sym]!=null)c.price=s[c.sym];});}catch(e){}}
+function savePx(){const s={};ROSTER.forEach(c=>s[c.sym]=c.price);localStorage.setItem(LS.px,JSON.stringify(s));}
+
+function chart(minor,strong,res,price){
+  const W=320,H=74,pad=18;const all=[...minor,...strong,...res];if(price)all.push(price);
+  if(all.length<2||!price)return '<div style="font-size:11px;color:#8b949e;padding:10px 0">Levels — pull live</div>';
+  let lo=Math.min(...all),hi=Math.max(...all);const m=(hi-lo)*0.08||hi*0.05;lo-=m;hi+=m;
+  const X=v=>pad+(v-lo)/(hi-lo)*(W-2*pad);
+  let s=`<line x1="${pad}" y1="40" x2="${W-pad}" y2="40" stroke="#2a3140" stroke-width="2"/>`;
+  res.forEach(v=>{const x=X(v).toFixed(1);s+=`<line x1="${x}" y1="31" x2="${x}" y2="40" stroke="#f85149" stroke-width="1.5"/><text x="${x}" y="25" fill="#f85149" font-size="9" text-anchor="middle">${fmtL(v)}</text>`;});
+  minor.forEach(v=>{const x=X(v).toFixed(1);s+=`<line x1="${x}" y1="40" x2="${x}" y2="47" stroke="#2e7d46" stroke-width="1.5"/><text x="${x}" y="58" fill="#6e9e7c" font-size="8.5" text-anchor="middle">${fmtL(v)}</text>`;});
+  strong.forEach(v=>{const x=X(v).toFixed(1);s+=`<line x1="${x}" y1="40" x2="${x}" y2="53" stroke="#3fb950" stroke-width="3"/><text x="${x}" y="66" fill="#3fb950" font-size="9.5" font-weight="bold" text-anchor="middle">${fmtL(v)}</text>`;});
+  const px=X(price).toFixed(1);
+  s+=`<polygon points="${(+px-6).toFixed(1)},32 ${(+px+6).toFixed(1)},32 ${px},41" fill="#39d0d8"/><text x="${px}" y="14" fill="#39d0d8" font-size="11" font-weight="bold" text-anchor="middle">${fmtL(price)}</text>`;
+  return `<svg class="spk" viewBox="0 0 ${W} ${H}">${s}</svg>`;
+}
+function renderTiles(){const g=document.getElementById('tiles');g.innerHTML='';
+  ROSTER.forEach((c,idx)=>{const bc=c.tc==='base'?'#58a6ff':(c.tc==='1'?'#3fb950':'#bc8cff');const minor=c.sup,strong=c.strong,res=c.res;
+    let buy=false;if(c.price&&strong.length)buy=strong.some(sv=>{const d=(c.price-sv)/c.price;return d<=0.04&&d>=-0.05;});
+    let dist='';if(c.price){const alls=[...minor,...strong];const ra=res.filter(v=>v>c.price).sort((a,b)=>a-b)[0];const sb=alls.filter(v=>v<c.price).sort((a,b)=>b-a)[0];const p=[];
+      if(ra)p.push(`<span class="neg">↑ +${((ra-c.price)/c.price*100).toFixed(1)}% to ${fmtL(ra)}</span>`);
+      if(sb)p.push(`<span class="pos">↓ ${((sb-c.price)/c.price*100).toFixed(1)}% to ${fmtL(sb)}</span>`);dist=p.join(' &nbsp; ');}
+    let floor='';if(c.price&&strong.length){const below=strong.filter(s=>s<c.price).sort((a,b)=>b-a);const near=below[0];const fl=Math.min(...strong);const parts=[];
+      if(near!=null)parts.push(`bounce <b style="color:#3fb950">${fmtL(near)}</b> <span class="neg">${((near-c.price)/c.price*100).toFixed(0)}%</span>`);
+      if(fl!=null&&fl!==near)parts.push(`floor <b style="color:#3fb950">${fmtL(fl)}</b> <span class="neg">${((fl-c.price)/c.price*100).toFixed(0)}%</span>`);
+      if(parts.length)floor=`<div class="floor">▣ ${parts.join(' · ')}${c.vr?'':' <span class="prov">prov.</span>'}</div>`;}
+    const d=document.createElement('div');d.className='tile'+(buy?' buy':'');d.style.borderLeftColor=bc;
+    d.innerHTML=`<div class="thd"><span class="tsym">${c.sym}</span><span class="tier t-${c.tc}">${c.tier}</span>${buy?'<span class="bz">BUY</span>':''}<span class="tav">✓ Rev X</span></div>
+      <div class="tprice"><b>${c.price?'$'+fmtL(c.price):'—'}</b> <span style="color:#8b949e;font-size:12px">RSI ${c.rsi}</span><span class="ed" onclick="editPx(${idx})">edit ✎</span></div>
+      ${chart(minor,strong,res,c.price)}
+      <div class="dist">${dist}</div>${floor}<div class="note">${c.note}</div>`;
+    g.appendChild(d);});
+}
+function editPx(i){const c=ROSTER[i];const v=prompt('Set live price for '+c.sym,c.price||'');if(v===null)return;const n=parseFloat(v);if(!isNaN(n)&&n>0){c.price=n;savePx();renderTiles();}}
+async function fetchPrices(){const btn=document.getElementById('kBtn'),info=document.getElementById('kInfo');btn.disabled=true;btn.textContent='Fetching…';
+  try{const pairs=[...new Set(ROSTER.map(c=>kpair(c.sym)))].join(',');
+    const r=await fetch('https://api.kraken.com/0/public/Ticker?pair='+encodeURIComponent(pairs));const j=await r.json();
+    if(j.error&&j.error.length)throw new Error(j.error.join('; '));
+    const keys=Object.keys(j.result||{});let got=0;
+    ROSTER.forEach(c=>{const want=kpair(c.sym);let k=keys.find(x=>x===want)||keys.find(x=>x.replace(/^[XZ]/,'').toUpperCase().startsWith(c.sym.toUpperCase())&&/USD$/i.test(x));if(k&&j.result[k]&&j.result[k].c){c.price=parseFloat(j.result[k].c[0]);got++;}});
+    savePx();renderTiles();calcHarvest();info.innerHTML='<span style="color:#3fb950">✓ '+got+' updated</span> '+new Date().toLocaleTimeString();
+  }catch(e){info.innerHTML='<span style="color:#f85149">✕ blocked</span> — tap a price to set it manually instead.';}
+  finally{btn.disabled=false;btn.textContent='↻ Live prices (Kraken)';}
+}
+function calcHarvest(){const g=id=>document.getElementById(id);if(!g('hvBuy'))return;
+  const buy=+g('hvBuy').value||0,sell=+g('hvSell').value||0,stop=+g('hvStop').value||0;
+  const jr=ROSTER.find(c=>c.sym==='JASMY');const px=jr?jr.price:0;
+  localStorage.setItem('clp_harvest',JSON.stringify({buy,sell,stop}));
+  const st=g('hvStatus');if(!st)return;
+  if(!px){st.textContent='Hit ↻ Live prices';st.style.color='#8b949e';return;}
+  let label,col;
+  if(px<stop){label='⚠ Below stop — range broke, cut';col='#f85149';}
+  else if(px<=buy*1.01){label='🟢 At floor — buy zone';col='#56d364';}
+  else if(px>=sell*0.99){label='🔴 At ceiling — take profit';col='#f85149';}
+  else{label='🟡 Mid-range — orders rest';col='#e3b341';}
+  st.style.color=col;
+  st.innerHTML=label+' <span style="color:#8b949e;font-weight:400">· $'+px.toFixed(5)+' · '+((sell-px)/px*100).toFixed(1)+'% to sell</span>';}
+function loadHarvest(){const a=JSON.parse(localStorage.getItem('clp_harvest')||'null');if(a){document.getElementById('hvBuy').value=a.buy;document.getElementById('hvSell').value=a.sell;document.getElementById('hvStop').value=a.stop;}calcHarvest();}
+// checklist
+function loadCk(){const s=JSON.parse(localStorage.getItem(LS.chk)||'{}');document.querySelectorAll('#ck li').forEach(li=>{if(s[li.dataset.k]){li.classList.add('done');li.querySelector('.bx').textContent='✓';}});verdict();}
+function verdict(){const all=[...document.querySelectorAll('#ck li')];const g=all.every(li=>li.classList.contains('done'));const v=document.getElementById('verdict');v.className='verdict '+(g?'v-green':'v-red');v.textContent=g?'VERIFY ✓ all green':'VERIFY: not green yet';}
+document.querySelectorAll('#ck li').forEach(li=>li.onclick=()=>{li.classList.toggle('done');li.querySelector('.bx').textContent=li.classList.contains('done')?'✓':'';const s={};document.querySelectorAll('#ck li').forEach(x=>s[x.dataset.k]=x.classList.contains('done'));localStorage.setItem(LS.chk,JSON.stringify(s));verdict();});
+function resetCk(){localStorage.removeItem(LS.chk);document.querySelectorAll('#ck li').forEach(li=>{li.classList.remove('done');li.querySelector('.bx').textContent='';});verdict();}
+function seg(t,b){document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));document.getElementById(t).classList.add('on');}
+// init
+applySaved();renderTiles();loadCk();loadHarvest();
+</script>
+</body>
+</html>
